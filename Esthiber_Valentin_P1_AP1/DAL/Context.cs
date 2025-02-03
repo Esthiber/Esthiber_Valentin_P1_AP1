@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Esthiber_Valentin_P1_AP1.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Esthiber_Valentin_P1_AP1.DAL
 {
@@ -6,6 +7,6 @@ namespace Esthiber_Valentin_P1_AP1.DAL
     {
         public Context(DbContextOptions<Context> options) : base(options) { }
 
-        public DbSet<Models.Modelo> Modelos { get; set; }
+        public DbSet<Modelo> Modelos { get; set; }
     }
 }
