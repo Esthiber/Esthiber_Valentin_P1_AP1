@@ -7,6 +7,6 @@ namespace Esthiber_Valentin_P1_AP1.DAL
     {
         public Context(DbContextOptions<Context> options) : base(options) { }
 
-        public DbSet<Modelos> Modelo { get; set; }
+        public DbSet<Ingresos> Ingresos { get; set; }
     }
 }
