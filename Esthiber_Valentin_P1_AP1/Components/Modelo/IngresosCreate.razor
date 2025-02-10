@@ -1,0 +1,69 @@
+﻿@page "/ingresos/create"
+@rendermode InteractiveServer
+@inject IngresosService ingresosService
+@inject NavigationManager navigationManager
+
+<h3>Ingresos Create</h3>
+<PageTitle>Crear Ingreso</PageTitle>
+<EditForm Model="ingreso" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header text-center">
+                <h5 class="card-title">Crear Ingreso<i class="bi bi-person-fill-gear"></i></h5>
+            </div>
+
+            <div class="card-body">
+                @*IngresoId*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>IngresoId</strong></label>
+                    <InputNumber class="form-control" @bind-Value="ingreso.IngresoId" readonly />
+                </div>
+                @*Concepto*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>Concepto</strong></label>
+                    <InputText class="form-control" @bind-Value="ingreso.Concepto" />
+                    <ValidationMessage For="@(() => ingreso.Concepto)" />
+                </div>
+                @*Fecha*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>Fecha</strong></label>
+                    <InputDate class="form-control" @bind-Value="ingreso.Fecha" />
+                    <ValidationMessage For="@(() => ingreso.Fecha)" />
+                </div>
+                @*Monto*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>Monto</strong></label>
+                    <InputNumber class="form-control" @bind-Value="ingreso.Monto" />
+                    <ValidationMessage For="@(() => ingreso.Monto)" />
+                </div>
+
+            </div>
+
+            @*Footer*@
+            <div class="card-footer text-center mt-2">
+                <a href="/ingresos" class="btn btn-secondary">
+                    <span class="bi bi-arrow-left"></span> Volver
+                </a>
+                <button type="submit" class="btn btn-primary bi bi-floppy"> Guardar</button>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+    Ingresos ingreso = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ingreso.Fecha = DateTime.Now;
+    }
+
+    private async Task Guardar()
+    {
+        await ingresosService.Guardar(ingreso);
+        navigationManager.NavigateTo("/ingresos");
+    }
+}
