@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Esthiber_Valentin_P1_AP1.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250210223132_Inicial")]
+    [Migration("20250210232343_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
