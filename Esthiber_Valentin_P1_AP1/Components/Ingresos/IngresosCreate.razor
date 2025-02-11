@@ -3,7 +3,6 @@
 @inject IngresosService ingresosService
 @inject NavigationManager navigationManager
 
-<h3>Ingresos Create</h3>
 <PageTitle>Crear Ingreso</PageTitle>
 <EditForm Model="ingreso" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
@@ -54,7 +53,7 @@
 </EditForm>
 
 @code {
-    Ingresos ingreso = new();
+    Ingresos ingreso { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {

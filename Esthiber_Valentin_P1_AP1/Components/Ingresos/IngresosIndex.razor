@@ -1,13 +1,13 @@
 ﻿@page "/ingresos"
 @rendermode InteractiveServer
 @inject IngresosService ingresosService
+@using System.Linq.Expressions;
 
-<h3>IngresosIndex</h3>
 <PageTitle>Lista de Ingresos</PageTitle>
 <div class="container">
     <div class="card shadow-lg">
         <div class="card-header space-between">
-            <h5 class="card-title text-center">Registro de T&eacute;cnicos</h5>
+            <h5 class="card-title text-center">Registro de Ingresos</h5>
             <a href="/ingresos/create" class="btn btn-primary"> <span class="bi bi-plus-square bi-trask mt-3"></span> Crear</a>
         </div>
 
@@ -35,8 +35,6 @@
                         <option value="" selected disabled>Elija una opci&oacute;n</option>
                         <option value="Id">Id</option>
                         <option value="Concepto">Concepto</option>
-                        <option value="Monto">Monto</option>
-                        <option value="Fecha">Fecha</option>
                     </InputSelect>
                 </div>
 
@@ -68,7 +66,7 @@
                             <td> @ingreso.IngresoId</td>
                             <td> @ingreso.Fecha</td>
                             <td> @ingreso.Concepto</td>
-                            <td> @ingreso.Monto</td>
+                            <td> @ingreso.Monto.ToString("n2")</td>
 
                             @*BTN Editar*@
                             <td class="text-center">
@@ -86,6 +84,8 @@
         </div>
         <div class="card-footer space-between">
             <label>Ingresos:  @listaIngresos.Count()</label>
+            <label>| Total: @listaIngresos.Sum(i => i.Monto).ToString("n2")</label>
+
         </div>
     </div>
 </div>
@@ -103,18 +103,30 @@
 
     public async Task Buscar()
     {
+        Expression<Func<Ingresos, bool>> query = (i => i.IngresoId > 0);
+
         if (Filtro == "Id")
         {
-            listaIngresos = await ingresosService.Listar(i => i.IngresoId == Convert.ToInt32(ValorFiltro));
+            try
+            {
+                int id = Convert.ToInt32(ValorFiltro);
+                query = (i => i.IngresoId == id);
+            }
+            catch (Exception e)
+            {
+                query = (i => i.IngresoId > 0);
+            }
+
         }
         else if (Filtro == "Concepto")
         {
-            listaIngresos = await ingresosService.Listar(i => i.Concepto.Contains(ValorFiltro));
+            query = ((i => i.Concepto.Contains(ValorFiltro)));
         }
         else if (string.IsNullOrEmpty(ValorFiltro))
         {
-            listaIngresos = await ingresosService.Listar(i => i.IngresoId > 0);
+            query = (i => i.IngresoId > 0);
         }
+        listaIngresos = await ingresosService.Listar(query);
     }
 
     public async Task Eliminar(int id)
